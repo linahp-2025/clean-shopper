@@ -33,3 +33,19 @@ See /docs/component-spec.md for defined components. Use existing components befo
 
 ## Build Plan
 See /docs/build-plan.md for the current phase breakdown. We are building phase by phase — do not jump ahead.
+
+## Design System
+See /docs/design-system.md for the full design system specification including color tokens, typography, spacing, shape, and motion.
+See /docs/design-system.html to preview the visual style guide in a browser.
+
+The Tailwind config extension in /docs/design-system.md must be applied to tailwind.config.js before building UI components.
+
+Key decisions:
+- Font: Poppins (Google Fonts) — single typeface, weights 300/400/500/600
+- Primary: #3A9D7C (Emerald Green)
+- Accent: #4A9BA8 (Soft Teal)
+- Surface: #F5F0E8 (Warm Sand) for secondary backgrounds
+- All semantic colors (success/warning/error/info) are defined — use them consistently
+
+## References
+- /docs/project-context.md — project context and UX reference document

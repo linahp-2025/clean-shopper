@@ -14,6 +14,7 @@ Single-user app. No authentication in V1. Local state plus Supabase for data per
 - Tailwind CSS — styling
 
 ## Conventions
+- Components: Always check /docs/component-spec.md before building any UI element. If an existing component covers the use case, use it. Only create a new component if no spec covers the pattern, and add the new component to component-spec.md before moving on.
 - Components: PascalCase filenames, one component per file, lives in /src/components/
 - Utility functions: camelCase, lives in /src/lib/
 - API calls: all external API calls through /src/lib/api/, never inline in components
@@ -51,3 +52,4 @@ Key decisions:
 ## References
 - /docs/project-context.md — project context and UX reference document
 - Tailwind config: See tailwind.config.js for design tokens as Tailwind theme extensions. Always use theme classes, never hardcode values.
+- Component spec: See /docs/component-spec.md — use existing components before creating new ones. Follow the spec for props, states, and visual structure.

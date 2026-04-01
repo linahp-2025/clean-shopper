@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clean Shopper — Design System v1.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary:       #3A9D7C;
+      --primary-light: #62B89B;
+      --primary-dark:  #297A5E;
+      --accent:        #4A9BA8;
+      --accent-light:  #6DB4BF;
+      --accent-dark:   #357885;
+      --success:       #3A9D7C;
+      --warning:       #D4943A;
+      --error:         #C0554F;
+      --info:          #4A9BA8;
+      --n50:  #FAFAF8;
+      --n100: #F5F0E8;
+      --n200: #E8E2D9;
+      --n300: #D5CCBF;
+      --n400: #AFA49A;
+      --n500: #8C8077;
+      --n600: #655D54;
+      --n700: #4A443C;
+      --n800: #302B24;
+      --n900: #1C1814;
+      --surface-page: #FAFAF8;
+      --surface-card: #FFFFFF;
+      --surface-secondary: #F5F0E8;
+      --radius-sm:   6px;
+      --radius-md:   10px;
+      --radius-lg:   16px;
+      --radius-xl:   24px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px rgba(28,24,20,0.06), 0 1px 2px rgba(28,24,20,0.04);
+      --shadow-md: 0 4px 12px rgba(28,24,20,0.08), 0 2px 4px rgba(28,24,20,0.04);
+      --shadow-lg: 0 12px 28px rgba(28,24,20,0.12), 0 4px 8px rgba(28,24,20,0.06);
+      --space-1:  4px;
+      --space-2:  8px;
+      --space-3:  12px;
+      --space-4:  16px;
+      --space-6:  24px;
+      --space-8:  32px;
+      --space-10: 40px;
+      --space-12: 48px;
+      --space-16: 64px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--n600);
+      background: var(--surface-page);
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: var(--space-16) var(--space-8);
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: var(--space-12) var(--space-4); }
+    }
+
+    section { margin-bottom: var(--space-16); }
+
+    /* ── Section labels ── */
+    .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--n400);
+      margin-bottom: var(--space-8);
+    }
+
+    .sublabel {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--n500);
+      margin-top: var(--space-10);
+      margin-bottom: var(--space-4);
+    }
+
+    /* ── Header ── */
+    .header {
+      margin-bottom: var(--space-16);
+      padding-bottom: var(--space-12);
+      border-bottom: 1px solid var(--n200);
+    }
+
+    .header-title {
+      font-size: 2.25rem;
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--n900);
+      margin-bottom: var(--space-2);
+    }
+
+    .header-meta {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--n400);
+      margin-bottom: var(--space-6);
+    }
+
+    .header-direction {
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--n500);
+      max-width: 640px;
+    }
+
+    /* ── Principles ── */
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .principle {
+      background: var(--surface-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .principle-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--n800);
+      margin-bottom: var(--space-1);
+    }
+
+    .principle-desc {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--n500);
+      line-height: 1.5;
+    }
+
+    /* ── Swatches ── */
+    .swatch-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+
+    .swatch {
+      flex: 1;
+      min-width: 110px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .swatch-block {
+      height: 72px;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-2) var(--space-3);
+    }
+
+    .swatch-hex {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      opacity: 0.85;
+    }
+
+    .swatch-hex.light { color: #fff; }
+    .swatch-hex.dark  { color: var(--n800); }
+
+    .swatch-info {
+      background: #fff;
+      padding: var(--space-2) var(--space-3);
+    }
+
+    .swatch-token {
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--n600);
+    }
+
+    .swatch-name {
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: var(--n400);
+      margin-top: 1px;
+    }
+
+    /* Neutral strip */
+    .neutral-strip {
+      display: flex;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .n-step {
+      flex: 1;
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .n-step span {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .n-step.light span { color: rgba(255,255,255,0.85); }
+    .n-step.dark  span { color: var(--n700); }
+
+    /* Surface demo */
+    .surface-demo {
+      background: var(--surface-page);
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+
+    .surface-card-demo {
+      background: var(--surface-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-sm);
+      margin-top: var(--space-4);
+    }
+
+    .surface-elevated-demo {
+      background: var(--surface-card);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-md);
+      margin-top: var(--space-4);
+    }
+
+    .surface-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--n400);
+      margin-bottom: var(--space-1);
+    }
+
+    /* ── Typography specimens ── */
+    .specimen {
+      padding-bottom: var(--space-8);
+      margin-bottom: var(--space-8);
+      border-bottom: 1px solid var(--n100);
+    }
+
+    .specimen:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .specimen-text { color: var(--n800); margin-bottom: var(--space-2); }
+
+    .specimen-meta {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: var(--n400);
+      line-height: 1.5;
+    }
+
+    /* ── Spacing bars ── */
+    .space-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-3);
+    }
+
+    .space-row-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--n500);
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .space-bar {
+      height: 22px;
+      background: rgba(58, 157, 124, 0.18);
+      border-left: 3px solid var(--primary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .space-row-val {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: var(--n400);
+      margin-left: var(--space-2);
+      flex-shrink: 0;
+    }
+
+    /* ── Shape ── */
+    .shape-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-6);
+      align-items: flex-start;
+    }
+
+    .shape-example { text-align: center; }
+
+    .shape-box {
+      width: 72px;
+      height: 52px;
+      background: var(--n200);
+      margin-bottom: var(--space-2);
+    }
+
+    .shape-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--n500);
+    }
+
+    .shape-val {
+      font-size: 0.625rem;
+      font-weight: 400;
+      color: var(--n400);
+    }
+
+    /* ── Shadows ── */
+    .shadow-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-8);
+      align-items: flex-start;
+    }
+
+    .shadow-example { text-align: center; }
+
+    .shadow-box {
+      width: 130px;
+      height: 84px;
+      background: #fff;
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-2);
+    }
+
+    .shadow-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--n500);
+    }
+
+    /* ── Motion ── */
+    .motion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .motion-card {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .motion-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--n700);
+      margin-bottom: var(--space-1);
+    }
+
+    .motion-val {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: var(--n400);
+    }
+
+    .motion-use {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: var(--n500);
+      margin-top: var(--space-1);
+    }
+
+    /* ── Tailwind config block ── */
+    pre {
+      background: var(--n800);
+      color: #e8e2d9;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      line-height: 1.6;
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+      overflow-x: auto;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: var(--space-16);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--n200);
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--n400);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HEADER -->
+    <header class="header">
+      <h1 class="header-title">Clean Shopper</h1>
+      <p class="header-meta">Design System v1.0 &mdash; March 30, 2026</p>
+      <p class="header-direction">
+        Trustworthy and approachable — a wellness-credible space that helps ingredient-conscious consumers research products with confidence. Generous layouts, natural color, and warm typography that communicates transparency without feeling clinical.
+      </p>
+    </header>
+
+    <!-- DESIGN PRINCIPLES -->
+    <section>
+      <p class="label">Design Principles</p>
+      <div class="principles">
+        <div class="principle">
+          <p class="principle-name">Credible, not clinical</p>
+          <p class="principle-desc">Safety data without the lab report feel. Warmth and accuracy in equal measure.</p>
+        </div>
+        <div class="principle">
+          <p class="principle-name">Generous by default</p>
+          <p class="principle-desc">Breathing room signals quality. Tight layouts feel anxious; generous ones feel considered.</p>
+        </div>
+        <div class="principle">
+          <p class="principle-name">Trust through consistency</p>
+          <p class="principle-desc">Color carries meaning. Use semantic colors consistently so users never re-learn what green means.</p>
+        </div>
+        <div class="principle">
+          <p class="principle-name">Legible at every size</p>
+          <p class="principle-desc">From hero headlines to EWG scores to badge labels — every text element reads comfortably.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLORS -->
+    <section>
+      <p class="label">Color Palette</p>
+
+      <p class="sublabel">Primary — Sage Green</p>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-block light" style="background:#3A9D7C;">
+            <span class="swatch-hex light">#3A9D7C</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">primary</span>
+            <span class="swatch-name">Emerald Green</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#62B89B;">
+            <span class="swatch-hex dark">#62B89B</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">primary.light</span>
+            <span class="swatch-name">Soft Emerald</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#297A5E;">
+            <span class="swatch-hex light">#297A5E</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">primary.dark</span>
+            <span class="swatch-name">Deep Emerald</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="sublabel">Accent — Soft Teal</p>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-block" style="background:#4A9BA8;">
+            <span class="swatch-hex light">#4A9BA8</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">accent</span>
+            <span class="swatch-name">Soft Teal</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#6DB4BF;">
+            <span class="swatch-hex dark">#6DB4BF</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">accent.light</span>
+            <span class="swatch-name">Pale Teal</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#357885;">
+            <span class="swatch-hex light">#357885</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">accent.dark</span>
+            <span class="swatch-name">Deep Teal</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="sublabel">Semantic Colors</p>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-block" style="background:#3A9D7C;">
+            <span class="swatch-hex light">#3A9D7C</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">success</span>
+            <span class="swatch-name">Clean / Safe</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#D4943A;">
+            <span class="swatch-hex light">#D4943A</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">warning</span>
+            <span class="swatch-name">Caution</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#C0554F;">
+            <span class="swatch-hex light">#C0554F</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">error</span>
+            <span class="swatch-name">Flagged</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-block" style="background:#4A9BA8;">
+            <span class="swatch-hex light">#4A9BA8</span>
+          </div>
+          <div class="swatch-info">
+            <span class="swatch-token">info</span>
+            <span class="swatch-name">Info</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="sublabel">Neutral Scale</p>
+      <div class="neutral-strip">
+        <div class="n-step dark"  style="background:#FAFAF8;"><span>50</span><span>#FAFAF8</span></div>
+        <div class="n-step dark"  style="background:#F5F0E8;"><span>100</span><span>#F5F0E8</span></div>
+        <div class="n-step dark"  style="background:#E8E2D9;"><span>200</span><span>#E8E2D9</span></div>
+        <div class="n-step dark"  style="background:#D5CCBF;"><span>300</span><span>#D5CCBF</span></div>
+        <div class="n-step dark"  style="background:#AFA49A;"><span>400</span><span>#AFA49A</span></div>
+        <div class="n-step light" style="background:#8C8077;"><span>500</span><span>#8C8077</span></div>
+        <div class="n-step light" style="background:#655D54;"><span>600</span><span>#655D54</span></div>
+        <div class="n-step light" style="background:#4A443C;"><span>700</span><span>#4A443C</span></div>
+        <div class="n-step light" style="background:#302B24;"><span>800</span><span>#302B24</span></div>
+        <div class="n-step light" style="background:#1C1814;"><span>900</span><span>#1C1814</span></div>
+      </div>
+
+      <p class="sublabel">Surface Hierarchy</p>
+      <div class="surface-demo">
+        <p class="surface-label">Page background — #FAFAF8</p>
+        <div class="surface-card-demo">
+          <p class="surface-label">Card surface — #FFFFFF + shadow-sm</p>
+          <div class="surface-elevated-demo">
+            <p class="surface-label">Elevated / floating — #FFFFFF + shadow-md</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TYPOGRAPHY -->
+    <section>
+      <p class="label">Typography — Poppins</p>
+
+      <div class="specimen">
+        <p class="specimen-text" style="font-size:2.25rem;font-weight:300;line-height:1.15;letter-spacing:-0.02em;">
+          Clean Shopper
+        </p>
+        <p class="specimen-meta">display &middot; 2.25rem (36px) &middot; weight 300 &middot; leading 1.15 &middot; tracking -0.02em</p>
+      </div>
+
+      <div class="specimen">
+        <p class="specimen-text" style="font-size:1.875rem;font-weight:600;line-height:1.2;letter-spacing:-0.01em;">
+          Discover cleaner products for your home
+        </p>
+        <p class="specimen-meta">H1 &middot; 1.875rem (30px) &middot; weight 600 &middot; leading 1.2</p>
+      </div>
+
+      <div class="specimen">
+        <p class="specimen-text" style="font-size:1.5rem;font-weight:600;line-height:1.25;">
+          Your saved products
+        </p>
+        <p class="specimen-meta">H2 &middot; 1.5rem (24px) &middot; weight 600 &middot; leading 1.25</p>
+      </div>
+
+      <div class="specimen">
+        <p class="specimen-text" style="font-size:1.25rem;font-weight:600;line-height:1.3;">
+          Ingredient safety breakdown
+        </p>
+        <p class="specimen-meta">H3 &middot; 1.25rem (20px) &middot; weight 600 &middot; leading 1.3</p>
+      </div>
+
+      <div class="specimen">
+        <p class="specimen-text" style="font-size:1rem;font-weight:600;line-height:1.35;">
+          Certification details
+        </p>
+        <p class="specimen-meta">H4 &middot; 1rem (16px) &middot; weight 600 &middot; leading 1.35</p>
+      </div>
+
+      <div class="specimen">
+        <p class="specimen-text" style="font-size:1rem;font-weight:400;line-height:1.7;">
+          This dish soap is rated well by EWG for low toxicity. It avoids parabens, synthetic fragrances, and triclosan. The plant-based surfactants are biodegradable, and packaging is made from 100% post-consumer recycled plastic.
+        </p>
+        <p class="specimen-meta">Body &middot; 1rem (16px) &middot; weight 400 &middot; leading 1.7</p>
+      </div>
+
+      <div class="specimen">
+        <p class="specimen-text" style="font-size:0.875rem;font-weight:400;line-height:1.5;color:var(--n500);">
+          EWG Verified &middot; USDA Organic &middot; B Corp Certified
+        </p>
+        <p class="specimen-meta">Small &middot; 0.875rem (14px) &middot; weight 400 &middot; leading 1.5</p>
+      </div>
+
+      <div class="specimen">
+        <p class="specimen-text" style="font-size:0.75rem;font-weight:500;line-height:1.4;color:var(--n400);">
+          Last updated 2 hours ago &middot; Source: EWG Skin Deep
+        </p>
+        <p class="specimen-meta">Caption &middot; 0.75rem (12px) &middot; weight 500 &middot; leading 1.4</p>
+      </div>
+    </section>
+
+    <!-- SPACING -->
+    <section>
+      <p class="label">Spacing Scale</p>
+      <p style="font-size:0.875rem;color:var(--n500);margin-bottom:var(--space-8);max-width:560px;">
+        Base unit: 4px. Generous and open — breathing room signals quality and builds trust.
+      </p>
+
+      <div class="space-row"><span class="space-row-label">space-1 / p-1</span><div class="space-bar" style="width:4px;"></div><span class="space-row-val">4px</span></div>
+      <div class="space-row"><span class="space-row-label">space-2 / p-2</span><div class="space-bar" style="width:8px;"></div><span class="space-row-val">8px</span></div>
+      <div class="space-row"><span class="space-row-label">space-3 / p-3</span><div class="space-bar" style="width:12px;"></div><span class="space-row-val">12px</span></div>
+      <div class="space-row"><span class="space-row-label">space-4 / p-4</span><div class="space-bar" style="width:16px;"></div><span class="space-row-val">16px</span></div>
+      <div class="space-row"><span class="space-row-label">space-6 / p-6</span><div class="space-bar" style="width:24px;"></div><span class="space-row-val">24px</span></div>
+      <div class="space-row"><span class="space-row-label">space-8 / p-8</span><div class="space-bar" style="width:32px;"></div><span class="space-row-val">32px</span></div>
+      <div class="space-row"><span class="space-row-label">space-10 / p-10</span><div class="space-bar" style="width:40px;"></div><span class="space-row-val">40px</span></div>
+      <div class="space-row"><span class="space-row-label">space-12 / p-12</span><div class="space-bar" style="width:48px;"></div><span class="space-row-val">48px</span></div>
+      <div class="space-row"><span class="space-row-label">space-16 / p-16</span><div class="space-bar" style="width:64px;"></div><span class="space-row-val">64px</span></div>
+    </section>
+
+    <!-- SHAPE -->
+    <section>
+      <p class="label">Shape &amp; Elevation</p>
+
+      <p class="sublabel">Border Radius</p>
+      <div class="shape-row">
+        <div class="shape-example">
+          <div class="shape-box" style="border-radius:6px;"></div>
+          <p class="shape-label">radius-sm</p>
+          <p class="shape-val">6px &middot; rounded-md</p>
+        </div>
+        <div class="shape-example">
+          <div class="shape-box" style="border-radius:10px;"></div>
+          <p class="shape-label">radius-md</p>
+          <p class="shape-val">10px &middot; rounded-lg</p>
+        </div>
+        <div class="shape-example">
+          <div class="shape-box" style="border-radius:16px;"></div>
+          <p class="shape-label">radius-lg</p>
+          <p class="shape-val">16px &middot; rounded-2xl</p>
+        </div>
+        <div class="shape-example">
+          <div class="shape-box" style="border-radius:24px;"></div>
+          <p class="shape-label">radius-xl</p>
+          <p class="shape-val">24px &middot; rounded-3xl</p>
+        </div>
+        <div class="shape-example">
+          <div class="shape-box" style="border-radius:9999px;width:52px;"></div>
+          <p class="shape-label">radius-full</p>
+          <p class="shape-val">9999px &middot; rounded-full</p>
+        </div>
+      </div>
+
+      <p class="sublabel">Shadows</p>
+      <div class="shadow-row">
+        <div class="shadow-example">
+          <div class="shadow-box" style="box-shadow:var(--shadow-sm);"></div>
+          <p class="shadow-label">shadow-sm</p>
+        </div>
+        <div class="shadow-example">
+          <div class="shadow-box" style="box-shadow:var(--shadow-md);"></div>
+          <p class="shadow-label">shadow-md</p>
+        </div>
+        <div class="shadow-example">
+          <div class="shadow-box" style="box-shadow:var(--shadow-lg);"></div>
+          <p class="shadow-label">shadow-lg</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MOTION -->
+    <section>
+      <p class="label">Motion</p>
+      <p style="font-size:0.875rem;color:var(--n500);margin-bottom:var(--space-8);max-width:560px;">
+        Smooth and deliberate — never bouncing or racing. Calm pace matches the calm product.
+      </p>
+      <div class="motion-grid">
+        <div class="motion-card">
+          <p class="motion-name">Fast — 120ms</p>
+          <p class="motion-val">ease-out</p>
+          <p class="motion-use">Hover color shifts, icon swaps</p>
+        </div>
+        <div class="motion-card">
+          <p class="motion-name">Normal — 220ms</p>
+          <p class="motion-val">ease-in-out</p>
+          <p class="motion-use">Dropdowns, tooltips, tab switches</p>
+        </div>
+        <div class="motion-card">
+          <p class="motion-name">Slow — 380ms</p>
+          <p class="motion-val">ease-out</p>
+          <p class="motion-use">Modals, sidebars, page transitions</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAILWIND CONFIG -->
+    <section>
+      <p class="label">Tailwind Config</p>
+      <pre>// tailwind.config.js
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      colors: {
+        primary: {
+          DEFAULT: '#3A9D7C',
+          light:   '#62B89B',
+          dark:    '#297A5E',
+        },
+        accent: {
+          DEFAULT: '#4A9BA8',
+          light:   '#6DB4BF',
+          dark:    '#357885',
+        },
+        success: '#3A9D7C',
+        warning: '#D4943A',
+        error:   '#C0554F',
+        info:    '#4A9BA8',
+        neutral: {
+          50:  '#FAFAF8',
+          100: '#F5F0E8',
+          200: '#E8E2D9',
+          300: '#D5CCBF',
+          400: '#AFA49A',
+          500: '#8C8077',
+          600: '#655D54',
+          700: '#4A443C',
+          800: '#302B24',
+          900: '#1C1814',
+        },
+      },
+      borderRadius: {
+        sm:   '6px',
+        md:   '10px',
+        lg:   '16px',
+        xl:   '24px',
+        full: '9999px',
+      },
+      boxShadow: {
+        sm: '0 1px 3px rgba(28,24,20,0.06), 0 1px 2px rgba(28,24,20,0.04)',
+        md: '0 4px 12px rgba(28,24,20,0.08), 0 2px 4px rgba(28,24,20,0.04)',
+        lg: '0 12px 28px rgba(28,24,20,0.12), 0 4px 8px rgba(28,24,20,0.06)',
+      },
+      maxWidth: {
+        content: '720px',
+        wide:    '1080px',
+      },
+    },
+  },
+  plugins: [],
+}</pre>
+    </section>
+
+    <footer class="footer">
+      <p>Generated by /design-system-generator &middot; Clean Shopper v1.0 &middot; March 30, 2026</p>
+    </footer>
+
+  </div>
+</body>
+</html>

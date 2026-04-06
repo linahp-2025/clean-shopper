@@ -2,72 +2,15 @@
  * BrowsePage
  *
  * Browse view — responsive grid of ProductCards filterable by category.
- * Placeholder data only. Save state is local (no persistence in V1 yet).
+ * Products fetched live from Supabase. Save state is local (no persistence in V1 yet).
  *
  * Layout: src/features/browse/ — feature-specific, not shared.
  * Shared components used: ProductCard (src/components/)
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ProductCard from '../../components/ProductCard'
-
-// ── Placeholder data ───────────────────────────────────────────────────────────
-
-const PRODUCTS = [
-  {
-    id: 1,
-    name: "Dr. Bronner's Pure Castile Soap",
-    safetyScore: 'clean',
-    numScore: 94,
-    category: 'Personal Care',
-    description:
-      'Organic, fair trade, and EWG Verified. Free from synthetic preservatives, detergents, and artificial fragrance. Every ingredient disclosed.',
-  },
-  {
-    id: 2,
-    name: 'Acure Brightening Facial Scrub',
-    safetyScore: 'caution',
-    category: 'Personal Care',
-    description:
-      'Contains sea kelp and glycolic acid. Three of twelve ingredients rated moderate concern by EWG — synthetic fragrance components undisclosed.',
-  },
-  {
-    id: 3,
-    name: 'Branch Basics Concentrate',
-    safetyScore: 'clean',
-    numScore: 98,
-    category: 'Home Cleaning',
-    description:
-      'Plant-based, fragrance-free, EWG Verified. Every ingredient third-party tested and rated 1–2 on Skin Deep. Certified B Corp.',
-  },
-  {
-    id: 4,
-    name: 'Method All-Purpose Cleaner',
-    safetyScore: 'caution',
-    category: 'Home Cleaning',
-    description:
-      'Biodegradable surfactants, mostly low-hazard — but synthetic fragrance blend is undisclosed. Full safety assessment not possible.',
-  },
-  {
-    id: 5,
-    name: 'Babyganics Shampoo + Body Wash',
-    safetyScore: 'clean',
-    numScore: 88,
-    category: 'Baby Care',
-    description:
-      'Tear-free, plant-derived formula. Free from sulfates, parabens, and artificial fragrance. Dermatologist-tested and pediatrician-approved.',
-  },
-  {
-    id: 6,
-    name: 'Desitin Rapid Relief Cream',
-    safetyScore: 'avoid',
-    category: 'Baby Care',
-    description:
-      'Zinc oxide is effective, but formulation contains BHA and synthetic fragrance components flagged by EWG at moderate-to-high concern levels.',
-  },
-]
-
-const CATEGORIES = ['All', 'Personal Care', 'Home Cleaning', 'Baby Care']
+import { supabase } from '../../lib/supabase'
 
 // ── Category filter pill ───────────────────────────────────────────────────────
 
@@ -94,12 +37,44 @@ function FilterPill({ label, isActive, onClick }) {
 // ── BrowsePage ─────────────────────────────────────────────────────────────────
 
 export default function BrowsePage() {
-  const [savedIds, setSavedIds]           = useState(new Set())
+  const [products, setProducts]             = useState([])
+  const [savedIds, setSavedIds]             = useState(new Set())
   const [activeCategory, setActiveCategory] = useState('All')
+  const [isLoading, setIsLoading]           = useState(true)
+  const [error, setError]                   = useState(null)
 
+  // ── Fetch products from Supabase ──────────────────────────────────────────
+  useEffect(() => {
+    async function fetchProducts() {
+      setIsLoading(true)
+      setError(null)
+
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, brand, category, description, safety_score, safety_level')
+        .order('category')
+        .order('name')
+
+      if (error) {
+        setError('Could not load products. Please try again.')
+        console.error('Supabase error:', error.message)
+      } else {
+        setProducts(data)
+      }
+
+      setIsLoading(false)
+    }
+
+    fetchProducts()
+  }, [])
+
+  // ── Derive categories dynamically from fetched data ───────────────────────
+  const categories = ['All', ...new Set(products.map((p) => p.category))]
+
+  // ── Filter ────────────────────────────────────────────────────────────────
   const visibleProducts = activeCategory === 'All'
-    ? PRODUCTS
-    : PRODUCTS.filter((p) => p.category === activeCategory)
+    ? products
+    : products.filter((p) => p.category === activeCategory)
 
   function toggleSave(id) {
     setSavedIds((prev) => {
@@ -122,32 +97,50 @@ export default function BrowsePage() {
         </p>
       </div>
 
+      {/* ── Error banner ─────────────────────────────────────────────────── */}
+      {error && (
+        <div className="mb-6 px-4 py-3 bg-error text-white text-sm rounded-md">
+          {error}
+        </div>
+      )}
+
       {/* ── Category filters ─────────────────────────────────────────────── */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        {CATEGORIES.map((cat) => (
-          <FilterPill
-            key={cat}
-            label={cat}
-            isActive={activeCategory === cat}
-            onClick={() => setActiveCategory(cat)}
-          />
-        ))}
-      </div>
+      {!error && (
+        <div className="flex flex-wrap gap-2 mb-8">
+          {categories.map((cat) => (
+            <FilterPill
+              key={cat}
+              label={cat}
+              isActive={activeCategory === cat}
+              onClick={() => setActiveCategory(cat)}
+            />
+          ))}
+        </div>
+      )}
 
       {/* ── Result count ─────────────────────────────────────────────────── */}
-      <p className="text-xs text-neutral-400 font-medium mb-4">
-        {visibleProducts.length} {visibleProducts.length === 1 ? 'product' : 'products'}
-        {activeCategory !== 'All' ? ` in ${activeCategory}` : ''}
-      </p>
+      {!isLoading && !error && (
+        <p className="text-xs text-neutral-400 font-medium mb-4">
+          {visibleProducts.length} {visibleProducts.length === 1 ? 'product' : 'products'}
+          {activeCategory !== 'All' ? ` in ${activeCategory}` : ''}
+        </p>
+      )}
 
       {/* ── Product grid ─────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {visibleProducts.map((product) => (
+
+        {/* Loading skeletons */}
+        {isLoading && Array.from({ length: 6 }).map((_, i) => (
+          <ProductCard key={i} isLoading />
+        ))}
+
+        {/* Live products */}
+        {!isLoading && visibleProducts.map((product) => (
           <ProductCard
             key={product.id}
             name={product.name}
-            safetyScore={product.safetyScore}
-            numScore={product.numScore}
+            safetyScore={product.safety_level}
+            numScore={product.safety_score}
             category={product.category}
             description={product.description}
             onClick={() => {}}
@@ -155,8 +148,8 @@ export default function BrowsePage() {
             isSaved={savedIds.has(product.id)}
           />
         ))}
-      </div>
 
+      </div>
     </div>
   )
 }

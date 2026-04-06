@@ -11,7 +11,11 @@
  * Props:
  *   activeRoute  {'search' | 'library' | 'list'}  — required
  *   onNavigate   {(route: string) => void}         — required
+ *   mode         {'light' | 'dark'}                — required, passed from app-level state
+ *   onModeChange {(mode: string) => void}          — required, updates app-level mode state
  */
+
+import ModeControl from './ModeControl'
 
 // ── Icons (inline SVG — no icon library dependency) ───────────────────────────
 
@@ -68,7 +72,7 @@ const NAV_ITEMS = [
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export default function NavBar({ activeRoute, onNavigate }) {
+export default function NavBar({ activeRoute, onNavigate, mode, onModeChange }) {
   return (
     <>
       {/* ── Desktop top bar ─────────────────────────────────────────────── */}
@@ -83,34 +87,38 @@ export default function NavBar({ activeRoute, onNavigate }) {
           🌿 Clean Shopper
         </span>
 
-        {/* Desktop nav links */}
-        <nav aria-label="Primary navigation">
-          <ul className="flex items-center gap-1" role="list">
-            {NAV_ITEMS.map(({ route, label }) => {
-              const isActive = activeRoute === route
-              return (
-                <li key={route}>
-                  <button
-                    onClick={() => onNavigate(route)}
-                    aria-current={isActive ? 'page' : undefined}
-                    className={`
-                      text-sm font-medium px-3 py-1 rounded-md
-                      transition-colors duration-fast ease-default
-                      focus-visible:outline-none focus-visible:ring-2
-                      focus-visible:ring-primary focus-visible:ring-offset-2
-                      ${isActive
-                        ? 'text-primary bg-neutral-100'
-                        : 'text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100'
-                      }
-                    `}
-                  >
-                    {label}
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-        </nav>
+        {/* Desktop nav links + ModeControl */}
+        <div className="flex items-center gap-4">
+          <nav aria-label="Primary navigation">
+            <ul className="flex items-center gap-1" role="list">
+              {NAV_ITEMS.map(({ route, label }) => {
+                const isActive = activeRoute === route
+                return (
+                  <li key={route}>
+                    <button
+                      onClick={() => onNavigate(route)}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={`
+                        text-sm font-medium px-3 py-1 rounded-md
+                        transition-colors duration-fast ease-default
+                        focus-visible:outline-none focus-visible:ring-2
+                        focus-visible:ring-primary focus-visible:ring-offset-2
+                        ${isActive
+                          ? 'text-primary bg-neutral-100'
+                          : 'text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100'
+                        }
+                      `}
+                    >
+                      {label}
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
+
+          <ModeControl mode={mode} onChange={onModeChange} size="sm" />
+        </div>
 
       </header>
 

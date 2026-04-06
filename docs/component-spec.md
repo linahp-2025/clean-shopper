@@ -15,6 +15,7 @@
 6. [Button](#6-button)
 7. [InputField](#7-inputfield)
 8. [EmptyState](#8-emptystate)
+9. [ModeControl](#9-modecontrol)
 
 ---
 
@@ -479,6 +480,61 @@ Helper or error text below
 - ✅ Match the icon to the context — avoid generic empty-box icons for every case
 - ❌ Do not show EmptyState while loading — show `SkeletonCard` during fetch, EmptyState only after a confirmed empty response
 - ❌ Do not use for error states — use `NotificationBanner` with `variant="error"` for failures
+
+---
+
+## 9. ModeControl
+
+**Purpose:** A toggle control that switches the app between light mode and dark mode — rendered in the NavBar and accessible from any surface that needs a mode toggle.
+
+### Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `mode` | `'light' \| 'dark'` | ✅ | Current active mode — controlled externally |
+| `onChange` | `(mode: 'light' \| 'dark') => void` | ✅ | Called with the new mode when the user toggles |
+| `size` | `'sm' \| 'md'` | optional | `md` default; `sm` for tight contexts like a compact NavBar |
+
+### Visual Structure
+
+```
+Light mode active:          Dark mode active:
+┌─────────────────────┐     ┌─────────────────────┐
+│  ☀  Light  │  🌙   │     │  ☀   │  🌙  Dark   │
+└─────────────────────┘     └─────────────────────┘
+  active pill left              active pill right
+```
+
+The control is a pill-shaped track containing two labelled segments. The active segment is filled; the inactive segment is transparent.
+
+**Tailwind classes by element:**
+
+- **Track (outer container):** `inline-flex items-center rounded-full bg-neutral-100 border border-neutral-200 p-0.5 gap-0.5 transition-colors duration-normal ease-default`
+- **Segment (shared base):** `inline-flex items-center gap-1.5 rounded-full font-medium transition-all duration-normal ease-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1`
+- **Size md segment:** `px-3 py-1.5 text-sm`
+- **Size sm segment:** `px-2 py-1 text-xs`
+- **Active segment:** `bg-white text-neutral-800 shadow-sm`
+- **Inactive segment:** `bg-transparent text-neutral-400 hover:text-neutral-600`
+- **Icon:** `w-4 h-4` (md) · `w-3 h-3` (sm) — sun icon for light, moon icon for dark
+
+### States
+
+| State | Treatment |
+|-------|-----------|
+| **Light active** | Light segment: `bg-white text-neutral-800 shadow-sm` · Dark segment: `bg-transparent text-neutral-400` |
+| **Dark active** | Dark segment: `bg-white text-neutral-800 shadow-sm` · Light segment: `bg-transparent text-neutral-400` |
+| **Hover (inactive segment)** | `text-neutral-600` — subtle affordance without changing the track |
+| **Focus (keyboard)** | `ring-2 ring-primary ring-offset-1` on the focused segment |
+| **Transition** | Active pill slides between segments using `duration-normal ease-default` |
+
+### Usage Rules
+
+- ✅ Use in the NavBar as the primary mode control — one instance per layout
+- ✅ Always pass `mode` from a shared app-level state — do not manage mode locally inside this component
+- ✅ Apply the resulting mode class (`dark` or `light`) to the root `<html>` or `<body>` element via the `onChange` handler
+- ❌ Do not render ModeControl on individual feature pages — it belongs in the global NavBar
+- ❌ Do not use an icon-only toggle without a text label — both "Light" and "Dark" labels must remain visible for clarity
+- ❌ V1 note: dark mode is out of scope per the design system. ModeControl is specced here for V2 readiness — do not wire up dark mode styles until V2
 
 ---
 

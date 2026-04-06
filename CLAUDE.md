@@ -22,6 +22,7 @@ Single-user app. No authentication in V1. Local state plus Supabase for data per
 - Styling: Use Tailwind theme classes for all design token values. Never hardcode hex colors, pixel font sizes, or spacing values in components. If a needed token does not exist in the Tailwind config, add it there rather than hardcoding the value. This means bg-primary not #2D7B5E, text-h3 not text-lg, p-lg not p-4.
 - State: React useState and useContext only. No Redux, no Zustand.
 - File naming: kebab-case for all non-component files
+- File location: Shared components reused across more than one screen belong in src/components/. Files specific to a single screen belong in that screen's folder under src/features/ (e.g. src/features/browse/). Do not mix the two — a component that only belongs to one screen should not be in src/components/, and a shared component should never live inside a feature folder.
 
 ## Do Not
 - Do not add user authentication or account features — V1 is single-user only

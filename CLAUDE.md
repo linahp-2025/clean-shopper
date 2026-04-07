@@ -3,7 +3,7 @@
 ## Project
 Clean Shopper is a personal product research assistant for ingredient-aware consumers. Users search for home and personal care products, get AI-generated clean/not-clean assessments based on ingredient safety data, save products to a personal library organized by category, and build shopping lists.
 
-Single-user app. No authentication in V1. Local state plus Supabase for data persistence.
+Started as a single-user app with no authentication in V1. Authentication is now in scope for V2: Supabase Auth with email/password sign-up and sign-in. Local state plus Supabase for data persistence.
 
 ## Tech Stack
 - React (Vite) — frontend UI
@@ -25,7 +25,8 @@ Single-user app. No authentication in V1. Local state plus Supabase for data per
 - File location: Shared components reused across more than one screen belong in src/components/. Files specific to a single screen belong in that screen's folder under src/features/ (e.g. src/features/browse/). Do not mix the two — a component that only belongs to one screen should not be in src/components/, and a shared component should never live inside a feature folder.
 
 ## Do Not
-- Do not add user authentication or account features — V1 is single-user only
+- Authentication is now in scope for V2. Use Supabase Auth (email/password only). Do not add OAuth, social login, or magic links — email/password only for now.
+- Do not add account management features (profile editing, password reset UI, etc.) until explicitly scoped
 - Do not use CSS other than Tailwind
 - Do not add features outside the current build phase without asking first
 - Do not create new components when an existing component in the component library covers the use case

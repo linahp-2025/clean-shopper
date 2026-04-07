@@ -9,10 +9,11 @@
  * landing page. Pass activeRoute="search" to highlight it.
  *
  * Props:
- *   activeRoute  {'search' | 'library' | 'list'}  — required
- *   onNavigate   {(route: string) => void}         — required
- *   mode         {'light' | 'dark'}                — required, passed from app-level state
- *   onModeChange {(mode: string) => void}          — required, updates app-level mode state
+ *   activeRoute  {'browse' | 'search' | 'library' | 'list'}  — required
+ *   onNavigate   {(route: string) => void}                    — required
+ *   mode         {'light' | 'dark'}                           — required
+ *   onModeChange {(mode: string) => void}                     — required
+ *   onSignOut    {() => void}                                  — required, signs out and returns to sign-in
  */
 
 import ModeControl from './ModeControl'
@@ -41,6 +42,20 @@ function LibraryIcon({ className }) {
     >
       <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
       <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+    </svg>
+  )
+}
+
+function SignOutIcon({ className }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" strokeWidth={1.75}
+      strokeLinecap="round" strokeLinejoin="round"
+      className={className} aria-hidden="true"
+    >
+      <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" y1="12" x2="9" y2="12" />
     </svg>
   )
 }
@@ -88,7 +103,7 @@ const NAV_ITEMS = [
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export default function NavBar({ activeRoute, onNavigate, mode, onModeChange }) {
+export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, onSignOut }) {
   return (
     <>
       {/* ── Desktop top bar ─────────────────────────────────────────────── */}
@@ -134,6 +149,24 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange }) 
           </nav>
 
           <ModeControl mode={mode} onChange={onModeChange} size="sm" />
+
+          {/* Sign out */}
+          <button
+            onClick={onSignOut}
+            aria-label="Sign out"
+            title="Sign out"
+            className="
+              flex items-center gap-1.5 text-sm font-medium
+              text-neutral-500 hover:text-error
+              transition-colors duration-fast ease-default
+              focus-visible:outline-none focus-visible:ring-2
+              focus-visible:ring-primary focus-visible:ring-offset-2
+              rounded-md px-2 py-1
+            "
+          >
+            <SignOutIcon className="w-4 h-4" />
+            <span>Sign out</span>
+          </button>
         </div>
 
       </header>
@@ -170,6 +203,24 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange }) 
             </button>
           )
         })}
+
+        {/* Sign out — mobile */}
+        <button
+          onClick={onSignOut}
+          aria-label="Sign out"
+          className="
+            flex flex-col items-center gap-1
+            text-xs font-medium text-neutral-400
+            hover:text-error
+            transition-colors duration-fast ease-default
+            focus-visible:outline-none focus-visible:ring-2
+            focus-visible:ring-primary focus-visible:ring-offset-2
+            rounded-md px-3 py-1
+          "
+        >
+          <SignOutIcon className="w-5 h-5" />
+          Sign out
+        </button>
       </nav>
 
     </>

@@ -103,7 +103,7 @@ const NAV_ITEMS = [
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, onSignOut }) {
+export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, session, onSignOut }) {
   return (
     <>
       {/* ── Desktop top bar ─────────────────────────────────────────────── */}
@@ -118,7 +118,7 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, on
           🌿 Clean Shopper
         </span>
 
-        {/* Desktop nav links + ModeControl */}
+        {/* Desktop nav links + ModeControl + auth */}
         <div className="flex items-center gap-4">
           <nav aria-label="Primary navigation">
             <ul className="flex items-center gap-1" role="list">
@@ -150,23 +150,39 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, on
 
           <ModeControl mode={mode} onChange={onModeChange} size="sm" />
 
-          {/* Sign out */}
-          <button
-            onClick={onSignOut}
-            aria-label="Sign out"
-            title="Sign out"
-            className="
-              flex items-center gap-1.5 text-sm font-medium
-              text-neutral-500 hover:text-error
-              transition-colors duration-fast ease-default
-              focus-visible:outline-none focus-visible:ring-2
-              focus-visible:ring-primary focus-visible:ring-offset-2
-              rounded-md px-2 py-1
-            "
-          >
-            <SignOutIcon className="w-4 h-4" />
-            <span>Sign out</span>
-          </button>
+          {/* Sign out (signed in) or Sign in (not signed in) */}
+          {session ? (
+            <button
+              onClick={onSignOut}
+              aria-label="Sign out"
+              title="Sign out"
+              className="
+                flex items-center gap-1.5 text-sm font-medium
+                text-neutral-500 hover:text-error
+                transition-colors duration-fast ease-default
+                focus-visible:outline-none focus-visible:ring-2
+                focus-visible:ring-primary focus-visible:ring-offset-2
+                rounded-md px-2 py-1
+              "
+            >
+              <SignOutIcon className="w-4 h-4" />
+              <span>Sign out</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => onNavigate('signin')}
+              className="
+                flex items-center gap-1.5 text-sm font-medium
+                text-primary hover:text-primary-dark
+                transition-colors duration-fast ease-default
+                focus-visible:outline-none focus-visible:ring-2
+                focus-visible:ring-primary focus-visible:ring-offset-2
+                rounded-md px-2 py-1
+              "
+            >
+              Sign in
+            </button>
+          )}
         </div>
 
       </header>
@@ -204,23 +220,40 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, on
           )
         })}
 
-        {/* Sign out — mobile */}
-        <button
-          onClick={onSignOut}
-          aria-label="Sign out"
-          className="
-            flex flex-col items-center gap-1
-            text-xs font-medium text-neutral-400
-            hover:text-error
-            transition-colors duration-fast ease-default
-            focus-visible:outline-none focus-visible:ring-2
-            focus-visible:ring-primary focus-visible:ring-offset-2
-            rounded-md px-3 py-1
-          "
-        >
-          <SignOutIcon className="w-5 h-5" />
-          Sign out
-        </button>
+        {/* Sign out (signed in) or Sign in (not signed in) — mobile */}
+        {session ? (
+          <button
+            onClick={onSignOut}
+            aria-label="Sign out"
+            className="
+              flex flex-col items-center gap-1
+              text-xs font-medium text-neutral-400
+              hover:text-error
+              transition-colors duration-fast ease-default
+              focus-visible:outline-none focus-visible:ring-2
+              focus-visible:ring-primary focus-visible:ring-offset-2
+              rounded-md px-3 py-1
+            "
+          >
+            <SignOutIcon className="w-5 h-5" />
+            Sign out
+          </button>
+        ) : (
+          <button
+            onClick={() => onNavigate('signin')}
+            className="
+              flex flex-col items-center gap-1
+              text-xs font-medium text-primary
+              transition-colors duration-fast ease-default
+              focus-visible:outline-none focus-visible:ring-2
+              focus-visible:ring-primary focus-visible:ring-offset-2
+              rounded-md px-3 py-1
+            "
+          >
+            <SignOutIcon className="w-5 h-5" />
+            Sign in
+          </button>
+        )}
       </nav>
 
     </>

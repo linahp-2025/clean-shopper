@@ -2,7 +2,8 @@
  * BrowsePage
  *
  * Browse view — responsive grid of ProductCards filterable by category.
- * Products fetched live from Supabase. Save state is local (no persistence in V1 yet).
+ * Products fetched live from Supabase.
+ * Save state persisted to saved_products table for signed-in users.
  *
  * Layout: src/features/browse/ — feature-specific, not shared.
  * Shared components used: ProductCard (src/components/)
@@ -11,6 +12,7 @@
 import { useState, useEffect } from 'react'
 import ProductCard from '../../components/ProductCard'
 import { supabase } from '../../lib/supabase'
+import { fetchSavedIds, saveProduct, unsaveProduct } from '../../lib/savedProducts'
 
 // ── Category filter pill ───────────────────────────────────────────────────────
 
@@ -36,37 +38,48 @@ function FilterPill({ label, isActive, onClick }) {
 
 // ── BrowsePage ─────────────────────────────────────────────────────────────────
 
-export default function BrowsePage() {
+export default function BrowsePage({ session }) {
   const [products, setProducts]             = useState([])
   const [savedIds, setSavedIds]             = useState(new Set())
   const [activeCategory, setActiveCategory] = useState('All')
   const [isLoading, setIsLoading]           = useState(true)
   const [error, setError]                   = useState(null)
 
-  // ── Fetch products from Supabase ──────────────────────────────────────────
+  const userId = session?.user?.id ?? null
+
+  // ── Fetch products + saved state on mount ─────────────────────────────────
   useEffect(() => {
-    async function fetchProducts() {
+    async function loadData() {
       setIsLoading(true)
       setError(null)
 
-      const { data, error } = await supabase
+      // Always fetch products (public read)
+      const { data, error: productsError } = await supabase
         .from('products')
         .select('id, name, brand, category, description, safety_score, safety_level')
         .order('category')
         .order('name')
 
-      if (error) {
+      if (productsError) {
         setError('Could not load products. Please try again.')
-        console.error('Supabase error:', error.message)
-      } else {
-        setProducts(data)
+        console.error('Supabase error:', productsError.message)
+        setIsLoading(false)
+        return
+      }
+
+      setProducts(data)
+
+      // Fetch saved IDs only when signed in
+      if (userId) {
+        const ids = await fetchSavedIds(userId)
+        setSavedIds(ids)
       }
 
       setIsLoading(false)
     }
 
-    fetchProducts()
-  }, [])
+    loadData()
+  }, [userId])
 
   // ── Derive categories dynamically from fetched data ───────────────────────
   const categories = ['All', ...new Set(products.map((p) => p.category))]
@@ -76,12 +89,32 @@ export default function BrowsePage() {
     ? products
     : products.filter((p) => p.category === activeCategory)
 
-  function toggleSave(id) {
+  // ── Toggle save — persists to Supabase when signed in ────────────────────
+  async function toggleSave(productId) {
+    if (!userId) return // Save button is hidden for unauthenticated users
+
+    const isSaved = savedIds.has(productId)
+
+    // Optimistic update
     setSavedIds((prev) => {
       const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
+      isSaved ? next.delete(productId) : next.add(productId)
       return next
     })
+
+    // Persist to Supabase
+    const { error } = isSaved
+      ? await unsaveProduct(userId, productId)
+      : await saveProduct(userId, productId)
+
+    // Revert on error
+    if (error) {
+      setSavedIds((prev) => {
+        const next = new Set(prev)
+        isSaved ? next.add(productId) : next.delete(productId)
+        return next
+      })
+    }
   }
 
   return (
@@ -144,7 +177,7 @@ export default function BrowsePage() {
             category={product.category}
             description={product.description}
             onClick={() => {}}
-            onSave={() => toggleSave(product.id)}
+            onSave={userId ? () => toggleSave(product.id) : undefined}
             isSaved={savedIds.has(product.id)}
           />
         ))}

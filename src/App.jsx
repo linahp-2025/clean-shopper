@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import NavBar from './components/NavBar'
 import BrowsePage from './features/browse/BrowsePage'
 import SearchPage from './features/search/SearchPage'
+import MyListPage from './features/list/MyListPage'
 import SignInPage from './features/auth/SignInPage'
 import SignUpPage from './features/auth/SignUpPage'
 import { supabase } from './lib/supabase'
@@ -44,11 +45,11 @@ export default function App() {
     )
   }
 
-  // ── Auth pages — no NavBar ────────────────────────────────────────────────
-  if (!session) {
-    if (activeRoute === 'signup') {
-      return <SignUpPage onNavigate={setActiveRoute} />
-    }
+  // ── Auth-only pages (no NavBar) ───────────────────────────────────────────
+  if (activeRoute === 'signup') {
+    return <SignUpPage onNavigate={setActiveRoute} />
+  }
+  if (activeRoute === 'signin') {
     return (
       <SignInPage
         onNavigate={setActiveRoute}
@@ -61,15 +62,16 @@ export default function App() {
   async function handleSignOut() {
     await supabase.auth.signOut()
     setSession(null)
-    setActiveRoute('signin')
+    setActiveRoute('browse')
   }
 
-  // ── Authenticated app ─────────────────────────────────────────────────────
+  // ── All users (signed in or not) can browse and search ───────────────────
   function renderPage() {
     switch (activeRoute) {
-      case 'search': return <SearchPage />
-      case 'browse': return <BrowsePage />
-      default:       return <BrowsePage />
+      case 'search': return <SearchPage session={session} />
+      case 'list':   return <MyListPage session={session} onNavigate={setActiveRoute} />
+      case 'browse': return <BrowsePage session={session} />
+      default:       return <BrowsePage session={session} />
     }
   }
 
@@ -80,6 +82,7 @@ export default function App() {
         onNavigate={setActiveRoute}
         mode={mode}
         onModeChange={setMode}
+        session={session}
         onSignOut={handleSignOut}
       />
       {renderPage()}

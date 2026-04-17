@@ -236,11 +236,11 @@ export default function ProductDetailPage({
 
         {/* Hero image */}
         {image_url && (
-          <div className="w-full h-48 rounded-md overflow-hidden bg-neutral-100 dark:bg-neutral-700 mb-6">
+          <div className="w-full h-72 rounded-md overflow-hidden bg-white dark:bg-neutral-700 mb-6">
             <img
               src={image_url}
               alt={name}
-              className="w-full h-full object-contain p-4"
+              className="w-full h-full object-contain p-6"
             />
           </div>
         )}

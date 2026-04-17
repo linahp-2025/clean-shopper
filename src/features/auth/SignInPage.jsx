@@ -51,22 +51,22 @@ export default function SignInPage({ onNavigate, onSignIn }) {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center px-4">
       <div className="w-full max-w-sm flex flex-col gap-6">
 
         {/* ── Wordmark ─────────────────────────────────────────────────── */}
         <div className="text-center">
           <p className="text-base font-semibold text-primary mb-1">🌿 Clean Shopper</p>
-          <h1 className="text-3xl font-semibold text-neutral-800 tracking-heading">
+          <h1 className="text-3xl font-semibold text-neutral-800 dark:text-neutral-100 tracking-heading">
             Welcome back
           </h1>
-          <p className="text-sm text-neutral-500 mt-1">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
             Sign in to your account to continue.
           </p>
         </div>
 
         {/* ── Card ─────────────────────────────────────────────────────── */}
-        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8">
+        <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-700 p-8">
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
 
             {/* Form-level error */}
@@ -114,7 +114,7 @@ export default function SignInPage({ onNavigate, onSignIn }) {
         </div>
 
         {/* ── Sign up link ──────────────────────────────────────────────── */}
-        <p className="text-sm text-neutral-500 text-center">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 text-center">
           Don&rsquo;t have an account?{' '}
           <button
             onClick={() => onNavigate('signup')}

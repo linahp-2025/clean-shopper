@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import NavBar from './components/NavBar'
 import BrowsePage from './features/browse/BrowsePage'
-import SearchPage from './features/search/SearchPage'
 import MyListPage from './features/list/MyListPage'
 import SignInPage from './features/auth/SignInPage'
 import SignUpPage from './features/auth/SignUpPage'
@@ -12,6 +11,11 @@ export default function App() {
   const [mode, setMode]               = useState('light')
   const [session, setSession]         = useState(null)
   const [authChecked, setAuthChecked] = useState(false)
+
+  // ── Sync dark class on <html> ─────────────────────────────────────────────
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', mode === 'dark')
+  }, [mode])
 
   // ── Restore session on load + keep in sync ────────────────────────────────
   useEffect(() => {
@@ -32,7 +36,7 @@ export default function App() {
   // ── Wait for auth check before rendering anything ─────────────────────────
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 flex items-center justify-center">
         <svg
           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"
@@ -68,7 +72,6 @@ export default function App() {
   // ── All users (signed in or not) can browse and search ───────────────────
   function renderPage() {
     switch (activeRoute) {
-      case 'search': return <SearchPage session={session} />
       case 'list':   return <MyListPage session={session} onNavigate={setActiveRoute} />
       case 'browse': return <BrowsePage session={session} />
       default:       return <BrowsePage session={session} />
@@ -76,7 +79,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <NavBar
         activeRoute={activeRoute}
         onNavigate={setActiveRoute}

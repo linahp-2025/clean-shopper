@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
 
   theme: {
     // Override defaults — use only our brand tokens
@@ -41,6 +42,7 @@ export default {
         700: '#4A443C',
         800: '#302B24',
         900: '#1C1814',
+        950: '#0E0C0A',
       },
 
       // ── Bare utilities always needed ─────────────────────

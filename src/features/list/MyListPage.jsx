@@ -38,10 +38,10 @@ function EmptyList({ onNavigate }) {
         <line x1="3"  y1="12" x2="3.01" y2="12" />
         <line x1="3"  y1="18" x2="3.01" y2="18" />
       </svg>
-      <p className="text-base font-semibold text-neutral-700">
+      <p className="text-base font-semibold text-neutral-700 dark:text-neutral-300">
         Your list is empty
       </p>
-      <p className="text-sm text-neutral-400 leading-relaxed max-w-xs">
+      <p className="text-sm text-neutral-400 dark:text-neutral-500 leading-relaxed max-w-xs">
         Browse or search for products and tap the save button to add them here.
       </p>
       <button
@@ -80,10 +80,10 @@ function SignInPrompt({ onNavigate }) {
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
         <circle cx="12" cy="7" r="4" />
       </svg>
-      <p className="text-base font-semibold text-neutral-700">
+      <p className="text-base font-semibold text-neutral-700 dark:text-neutral-300">
         Sign in to see your list
       </p>
-      <p className="text-sm text-neutral-400 leading-relaxed max-w-xs">
+      <p className="text-sm text-neutral-400 dark:text-neutral-500 leading-relaxed max-w-xs">
         Your saved products are stored to your account. Sign in to view and manage them.
       </p>
       <button
@@ -173,10 +173,10 @@ export default function MyListPage({ session, onNavigate }) {
 
       {/* ── Page header ──────────────────────────────────────────────────── */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-neutral-800 tracking-heading mb-1">
+        <h1 className="text-3xl font-semibold text-neutral-800 dark:text-neutral-100 tracking-heading mb-1">
           My List
         </h1>
-        <p className="text-sm text-neutral-500 leading-relaxed">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
           Products you&rsquo;ve saved for reference. Tap the save button to remove one.
         </p>
       </div>
@@ -208,7 +208,7 @@ export default function MyListPage({ session, onNavigate }) {
       {/* ── Saved products grid ───────────────────────────────────────────── */}
       {userId && !isLoading && !error && savedProducts.length > 0 && (
         <>
-          <p className="text-xs text-neutral-400 font-medium mb-4">
+          <p className="text-xs text-neutral-400 dark:text-neutral-500 font-medium mb-4">
             {savedProducts.length} {savedProducts.length === 1 ? 'product' : 'products'} saved
           </p>
 

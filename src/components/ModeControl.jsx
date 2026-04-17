@@ -72,8 +72,8 @@ const SIZE = {
 export default function ModeControl({ mode, onChange, size = 'md' }) {
   const { segment, icon } = SIZE[size] ?? SIZE.md
 
-  const activeClasses   = 'bg-white text-neutral-800 shadow-sm'
-  const inactiveClasses = 'bg-transparent text-neutral-400 hover:text-neutral-600'
+  const activeClasses   = 'bg-white dark:bg-neutral-700 text-neutral-800 dark:text-neutral-100 shadow-sm'
+  const inactiveClasses = 'bg-transparent text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300'
 
   const baseSegment = [
     'inline-flex items-center rounded-full font-medium',
@@ -87,7 +87,7 @@ export default function ModeControl({ mode, onChange, size = 'md' }) {
     <div
       role="group"
       aria-label="Display mode"
-      className="inline-flex items-center rounded-full bg-neutral-100 border border-neutral-200 p-0.5 gap-0.5"
+      className="inline-flex items-center rounded-full bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 p-0.5 gap-0.5"
     >
       {/* ── Light segment ──────────────────────────────────────────────── */}
       <button

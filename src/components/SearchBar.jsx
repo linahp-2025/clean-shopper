@@ -111,16 +111,16 @@ export default function SearchBar({
         disabled={disabled}
         aria-label="Search products"
         className={`
-          w-full bg-white border rounded-lg
+          w-full bg-white dark:bg-neutral-800 border rounded-lg
           pl-10 ${showClear ? 'pr-10' : 'pr-4'} py-3
-          text-base text-neutral-800
-          placeholder:text-neutral-400
+          text-base text-neutral-800 dark:text-neutral-100
+          placeholder:text-neutral-400 dark:placeholder:text-neutral-500
           leading-body shadow-sm
           transition-all duration-fast ease-default
           focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent focus:shadow-md
           ${disabled
-            ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed border-neutral-200'
-            : 'border-neutral-200 hover:border-neutral-300'
+            ? 'bg-neutral-100 dark:bg-neutral-700 text-neutral-400 cursor-not-allowed border-neutral-200 dark:border-neutral-600'
+            : 'border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600'
           }
         `}
       />
@@ -132,7 +132,7 @@ export default function SearchBar({
           aria-label="Clear search"
           className="
             absolute right-3
-            text-neutral-400 hover:text-neutral-600
+            text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300
             transition-colors duration-fast ease-default
             focus-visible:outline-none focus-visible:ring-2
             focus-visible:ring-primary focus-visible:ring-offset-1

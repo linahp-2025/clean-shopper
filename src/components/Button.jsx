@@ -44,15 +44,15 @@ const VARIANT_CLASSES = {
     disabled: 'disabled:bg-neutral-300 disabled:text-neutral-400 disabled:shadow-none',
   },
   secondary: {
-    base:     'bg-white text-primary border border-primary',
-    hover:    'hover:bg-neutral-100',
-    active:   'active:bg-neutral-100 active:scale-[0.98]',
+    base:     'bg-white dark:bg-neutral-800 text-primary border border-primary',
+    hover:    'hover:bg-neutral-100 dark:hover:bg-neutral-700',
+    active:   'active:bg-neutral-100 dark:active:bg-neutral-700 active:scale-[0.98]',
     disabled: 'disabled:border-neutral-300 disabled:text-neutral-400',
   },
   ghost: {
     base:     'bg-transparent text-primary',
-    hover:    'hover:bg-neutral-100',
-    active:   'active:bg-neutral-200 active:scale-[0.98]',
+    hover:    'hover:bg-neutral-100 dark:hover:bg-neutral-800',
+    active:   'active:bg-neutral-200 dark:active:bg-neutral-700 active:scale-[0.98]',
     disabled: 'disabled:text-neutral-400',
   },
 }

@@ -59,7 +59,7 @@ export default function BrowsePage({ session }) {
 
       const { data, error: productsError } = await supabase
         .from('products')
-        .select('id, name, brand, category, description, safety_score, safety_level')
+        .select('id, name, brand, category, description, safety_score, safety_level, image_url')
         .order('category')
         .order('name')
 
@@ -222,6 +222,7 @@ export default function BrowsePage({ session }) {
             numScore={product.safety_score}
             category={product.category}
             description={product.description}
+            imageUrl={product.image_url}
             onClick={() => setSelectedProduct(product)}
             onSave={userId ? () => toggleSave(product.id) : undefined}
             isSaved={savedIds.has(product.id)}

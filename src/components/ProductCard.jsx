@@ -61,6 +61,7 @@ export default function ProductCard({
   numScore,
   category,
   description,
+  imageUrl,
   onClick,
   onSave,
   isSaved = false,
@@ -84,6 +85,18 @@ export default function ProductCard({
         focus-visible:ring-primary focus-visible:ring-offset-2
       "
     >
+
+      {/* ── Product image ──────────────────────────────────────────────────── */}
+      {imageUrl && (
+        <div className="w-full h-36 rounded-md overflow-hidden bg-neutral-100 dark:bg-neutral-700 -mx-0 mb-1">
+          <img
+            src={imageUrl}
+            alt={name}
+            className="w-full h-full object-contain p-2"
+            loading="lazy"
+          />
+        </div>
+      )}
 
       {/* ── Top row: category tag + safety badge ──────────────────────────── */}
       <div className="flex items-center justify-between gap-3">

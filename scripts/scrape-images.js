@@ -125,7 +125,7 @@ if (SAVE) {
   const { createClient } = await import('@supabase/supabase-js')
   const supabase = createClient(
     process.env.VITE_SUPABASE_URL,
-    process.env.VITE_SUPABASE_ANON_KEY
+    process.env.SUPABASE_SERVICE_ROLE_KEY
   )
 
   for (const r of found) {

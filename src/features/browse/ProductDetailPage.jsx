@@ -205,7 +205,7 @@ export default function ProductDetailPage({
   savedIds,
   onToggleSave,
 }) {
-  const { id, name, brand, category, description, safety_score, safety_level } = product
+  const { id, name, brand, category, description, safety_score, safety_level, image_url } = product
   const userId  = session?.user?.id ?? null
   const isSaved = savedIds.has(id)
   const showAlternatives = safety_level === 'caution' || safety_level === 'avoid'
@@ -233,6 +233,17 @@ export default function ProductDetailPage({
 
       {/* ── Product header ────────────────────────────────────────────────── */}
       <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-700 px-8 py-8 mb-8">
+
+        {/* Hero image */}
+        {image_url && (
+          <div className="w-full h-48 rounded-md overflow-hidden bg-neutral-100 dark:bg-neutral-700 mb-6">
+            <img
+              src={image_url}
+              alt={name}
+              className="w-full h-full object-contain p-4"
+            />
+          </div>
+        )}
 
         {/* Category + badge row */}
         <div className="flex items-center justify-between gap-4 mb-4">

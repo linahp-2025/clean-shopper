@@ -37,7 +37,7 @@ export default function InputField({
     <div className="flex flex-col gap-1">
 
       {/* ── Label ────────────────────────────────────────────────────────── */}
-      <label htmlFor={id} className="text-sm font-medium text-neutral-700">
+      <label htmlFor={id} className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
         {label}
         {required && (
           <span className="text-error ml-0.5" aria-hidden="true">*</span>
@@ -65,19 +65,19 @@ export default function InputField({
           }
           aria-invalid={hasError ? 'true' : undefined}
           className={`
-            w-full bg-white border rounded-md
+            w-full bg-white dark:bg-neutral-800 border rounded-md
             ${leftIcon ? 'pl-9' : 'px-3'} px-3 py-2
-            text-base text-neutral-800
-            placeholder:text-neutral-400
+            text-base text-neutral-800 dark:text-neutral-100
+            placeholder:text-neutral-400 dark:placeholder:text-neutral-500
             leading-body
             transition-all duration-fast ease-default
             focus:outline-none focus:ring-2 focus:border-transparent
             ${hasError
               ? 'border-error focus:ring-error'
-              : 'border-neutral-200 hover:border-neutral-300 focus:ring-primary'
+              : 'border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 focus:ring-primary'
             }
             ${disabled
-              ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed border-neutral-200'
+              ? 'bg-neutral-100 dark:bg-neutral-700 text-neutral-400 cursor-not-allowed border-neutral-200 dark:border-neutral-600'
               : ''
             }
           `}

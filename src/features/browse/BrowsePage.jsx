@@ -11,6 +11,8 @@
 
 import { useState, useEffect } from 'react'
 import ProductCard from '../../components/ProductCard'
+import SearchBar from '../../components/SearchBar'
+import ProductDetailPage from './ProductDetailPage'
 import { supabase } from '../../lib/supabase'
 import { fetchSavedIds, saveProduct, unsaveProduct } from '../../lib/savedProducts'
 
@@ -27,7 +29,7 @@ function FilterPill({ label, isActive, onClick }) {
         focus-visible:ring-primary focus-visible:ring-offset-2
         ${isActive
           ? 'bg-primary text-white'
-          : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-neutral-800'
+          : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-800 dark:hover:text-neutral-100'
         }
       `}
     >
@@ -42,6 +44,8 @@ export default function BrowsePage({ session }) {
   const [products, setProducts]             = useState([])
   const [savedIds, setSavedIds]             = useState(new Set())
   const [activeCategory, setActiveCategory] = useState('All')
+  const [query, setQuery]                   = useState('')
+  const [selectedProduct, setSelectedProduct] = useState(null)
   const [isLoading, setIsLoading]           = useState(true)
   const [error, setError]                   = useState(null)
 
@@ -53,7 +57,6 @@ export default function BrowsePage({ session }) {
       setIsLoading(true)
       setError(null)
 
-      // Always fetch products (public read)
       const { data, error: productsError } = await supabase
         .from('products')
         .select('id, name, brand, category, description, safety_score, safety_level')
@@ -69,7 +72,6 @@ export default function BrowsePage({ session }) {
 
       setProducts(data)
 
-      // Fetch saved IDs only when signed in
       if (userId) {
         const ids = await fetchSavedIds(userId)
         setSavedIds(ids)
@@ -84,30 +86,41 @@ export default function BrowsePage({ session }) {
   // ── Derive categories dynamically from fetched data ───────────────────────
   const categories = ['All', ...new Set(products.map((p) => p.category))]
 
-  // ── Filter ────────────────────────────────────────────────────────────────
-  const visibleProducts = activeCategory === 'All'
-    ? products
-    : products.filter((p) => p.category === activeCategory)
+  // ── Combined filter: category + search query ──────────────────────────────
+  const trimmed = query.trim().toLowerCase()
+  const visibleProducts = products.filter((p) => {
+    const matchesCategory = activeCategory === 'All' || p.category === activeCategory
+    const matchesQuery    = !trimmed ||
+      p.name.toLowerCase().includes(trimmed) ||
+      (p.brand ?? '').toLowerCase().includes(trimmed) ||
+      p.description.toLowerCase().includes(trimmed)
+    return matchesCategory && matchesQuery
+  })
+
+  function handleQueryChange(value) {
+    setQuery(value)
+  }
+
+  function handleClear() {
+    setQuery('')
+  }
 
   // ── Toggle save — persists to Supabase when signed in ────────────────────
   async function toggleSave(productId) {
-    if (!userId) return // Save button is hidden for unauthenticated users
+    if (!userId) return
 
     const isSaved = savedIds.has(productId)
 
-    // Optimistic update
     setSavedIds((prev) => {
       const next = new Set(prev)
       isSaved ? next.delete(productId) : next.add(productId)
       return next
     })
 
-    // Persist to Supabase
     const { error } = isSaved
       ? await unsaveProduct(userId, productId)
       : await saveProduct(userId, productId)
 
-    // Revert on error
     if (error) {
       setSavedIds((prev) => {
         const next = new Set(prev)
@@ -117,18 +130,52 @@ export default function BrowsePage({ session }) {
     }
   }
 
+  // ── Result count label ────────────────────────────────────────────────────
+  function resultLabel() {
+    const count = visibleProducts.length
+    const parts = []
+    if (activeCategory !== 'All') parts.push(`in ${activeCategory}`)
+    if (trimmed) parts.push(`matching "${query.trim()}"`)
+    return `${count} ${count === 1 ? 'product' : 'products'}${parts.length ? ' ' + parts.join(', ') : ''}`
+  }
+
+  if (selectedProduct) {
+    return (
+      <ProductDetailPage
+        product={selectedProduct}
+        onBack={() => setSelectedProduct(null)}
+        session={session}
+        savedIds={savedIds}
+        onToggleSave={toggleSave}
+      />
+    )
+  }
+
   return (
     <div className="max-w-wide mx-auto px-8 py-12">
 
       {/* ── Page header ──────────────────────────────────────────────────── */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-neutral-800 tracking-heading mb-1">
+        <h1 className="text-3xl font-semibold text-neutral-800 dark:text-neutral-100 tracking-heading mb-1">
           Browse Products
         </h1>
-        <p className="text-sm text-neutral-500 leading-relaxed">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
           AI-assessed ingredient safety ratings. Tap a card to see the full breakdown.
         </p>
       </div>
+
+      {/* ── Search bar ───────────────────────────────────────────────────── */}
+      {!error && (
+        <div className="mb-6">
+          <SearchBar
+            value={query}
+            onChange={handleQueryChange}
+            onSubmit={() => {}}
+            onClear={handleClear}
+            placeholder="Search by name, brand, or ingredient…"
+          />
+        </div>
+      )}
 
       {/* ── Error banner ─────────────────────────────────────────────────── */}
       {error && (
@@ -139,7 +186,7 @@ export default function BrowsePage({ session }) {
 
       {/* ── Category filters ─────────────────────────────────────────────── */}
       {!error && (
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="flex flex-wrap gap-2 mb-6">
           {categories.map((cat) => (
             <FilterPill
               key={cat}
@@ -153,9 +200,8 @@ export default function BrowsePage({ session }) {
 
       {/* ── Result count ─────────────────────────────────────────────────── */}
       {!isLoading && !error && (
-        <p className="text-xs text-neutral-400 font-medium mb-4">
-          {visibleProducts.length} {visibleProducts.length === 1 ? 'product' : 'products'}
-          {activeCategory !== 'All' ? ` in ${activeCategory}` : ''}
+        <p className="text-xs text-neutral-400 dark:text-neutral-500 font-medium mb-4">
+          {resultLabel()}
         </p>
       )}
 
@@ -176,7 +222,7 @@ export default function BrowsePage({ session }) {
             numScore={product.safety_score}
             category={product.category}
             description={product.description}
-            onClick={() => {}}
+            onClick={() => setSelectedProduct(product)}
             onSave={userId ? () => toggleSave(product.id) : undefined}
             isSaved={savedIds.has(product.id)}
           />

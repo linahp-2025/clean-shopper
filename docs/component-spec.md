@@ -538,6 +538,56 @@ The control is a pill-shaped track containing two labelled segments. The active 
 
 ---
 
+## 10. ProductDetailPage
+
+**Purpose:** Full product detail view rendered inside BrowsePage when a ProductCard is tapped. Shows name, brand, category tag, safety badge, score meter, and description. For caution/avoid products, fetches and shows up to 3 cleaner alternatives from the same category.
+
+**Location:** `src/features/browse/ProductDetailPage.jsx` — feature-specific, not shared.
+
+### Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `product` | `object` | ✅ | Full product row: `{ id, name, brand, category, description, safety_score, safety_level }` |
+| `onBack` | `() => void` | ✅ | Returns user to the Browse grid |
+| `session` | `object\|null` | ✅ | Supabase session — controls save button visibility |
+| `savedIds` | `Set` | ✅ | Currently saved product IDs for save state |
+| `onToggleSave` | `(productId) => void` | ✅ | Save/unsave handler passed from BrowsePage |
+
+### Visual Structure
+
+```
+← Browse
+
+┌─────────────────────────────────────────────────────┐
+│  [CategoryTag]                      [SafetyBadge]   │
+│                                                      │
+│  Product Name                                        │
+│  by Brand Name                                       │
+│                                                      │
+│  Safety Score ──────────────────────────────  92     │
+│                                                      │
+│  Full description text goes here...                  │
+│                                                      │
+│                               [ 🔖 Save to list ]   │
+└─────────────────────────────────────────────────────┘
+
+── Cleaner alternatives (caution/avoid only) ──────────
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│ ProductCard  │  │ ProductCard  │  │ ProductCard  │
+└──────────────┘  └──────────────┘  └──────────────┘
+```
+
+### Rules
+
+- ✅ Rendered inside `BrowsePage` via `selectedProduct` state — not a route
+- ✅ Alternatives section only renders for `caution` or `avoid` products; hidden for `clean`
+- ✅ Alternatives fetch up to 3 `safety_level = 'clean'` products from the same category
+- ❌ Do not show alternatives if none exist — the section is omitted entirely
+- ❌ Do not navigate away from BrowsePage — use `onBack` to return to the grid
+
+---
+
 ## Token Quick Reference
 
 All components use the following token classes exclusively. Never hardcode values.

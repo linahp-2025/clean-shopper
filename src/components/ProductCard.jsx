@@ -40,15 +40,15 @@ function BookmarkIcon({ filled }) {
 // ── Loading skeleton ───────────────────────────────────────────────────────────
 function Skeleton() {
   return (
-    <article className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6 flex flex-col gap-4 animate-pulse">
+    <article className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-700 p-6 flex flex-col gap-4 animate-pulse">
       <div className="flex items-center justify-between gap-3">
-        <div className="h-5 w-24 bg-neutral-200 rounded-sm" />
-        <div className="h-5 w-16 bg-neutral-200 rounded-full" />
+        <div className="h-5 w-24 bg-neutral-200 dark:bg-neutral-600 rounded-sm" />
+        <div className="h-5 w-16 bg-neutral-200 dark:bg-neutral-600 rounded-full" />
       </div>
-      <div className="h-6 w-3/4 bg-neutral-200 rounded-md" />
+      <div className="h-6 w-3/4 bg-neutral-200 dark:bg-neutral-600 rounded-md" />
       <div className="flex flex-col gap-2">
-        <div className="h-4 w-full bg-neutral-200 rounded-md" />
-        <div className="h-4 w-5/6 bg-neutral-200 rounded-md" />
+        <div className="h-4 w-full bg-neutral-200 dark:bg-neutral-600 rounded-md" />
+        <div className="h-4 w-5/6 bg-neutral-200 dark:bg-neutral-600 rounded-md" />
       </div>
     </article>
   )
@@ -75,11 +75,11 @@ export default function ProductCard({
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
       className="
-        bg-white rounded-lg shadow-sm border border-neutral-200
+        bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-700
         px-6 pt-5 pb-6 flex flex-col gap-3
         cursor-pointer
         transition-shadow duration-fast ease-default
-        hover:shadow-md hover:border-neutral-300
+        hover:shadow-md hover:border-neutral-300 dark:hover:border-neutral-600
         focus-visible:outline-none focus-visible:ring-2
         focus-visible:ring-primary focus-visible:ring-offset-2
       "
@@ -90,7 +90,7 @@ export default function ProductCard({
 
         <span className="
           inline-flex items-center
-          bg-neutral-100 text-accent
+          bg-neutral-100 dark:bg-neutral-700 text-accent dark:text-accent-light
           text-xs font-medium tracking-caps uppercase
           rounded-sm px-2 py-1
           leading-none
@@ -103,12 +103,12 @@ export default function ProductCard({
       </div>
 
       {/* ── Product name ───────────────────────────────────────────────────── */}
-      <h3 className="text-xl font-semibold text-neutral-800 leading-tight tracking-heading">
+      <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100 leading-tight tracking-heading">
         {name}
       </h3>
 
       {/* ── Description ───────────────────────────────────────────────────── */}
-      <p className="text-sm text-neutral-500 leading-relaxed line-clamp-3 mt-1">
+      <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-3 mt-1">
         {description}
       </p>
 

@@ -54,11 +54,11 @@ export default function SignUpPage({ onNavigate }) {
   // ── Success state ─────────────────────────────────────────────────────────
   if (success) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center px-4">
-        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8 w-full max-w-sm text-center flex flex-col gap-4">
+      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center px-4">
+        <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-700 p-8 w-full max-w-sm text-center flex flex-col gap-4">
           <div className="text-4xl">✉️</div>
-          <h2 className="text-xl font-semibold text-neutral-800">Check your email</h2>
-          <p className="text-sm text-neutral-500 leading-relaxed">
+          <h2 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100">Check your email</h2>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
             We sent a confirmation link to <strong className="text-neutral-700">{email}</strong>.
             Click it to activate your account, then sign in.
           </p>
@@ -72,22 +72,22 @@ export default function SignUpPage({ onNavigate }) {
 
   // ── Form ──────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-neutral-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center px-4">
       <div className="w-full max-w-sm flex flex-col gap-6">
 
         {/* ── Wordmark ─────────────────────────────────────────────────── */}
         <div className="text-center">
           <p className="text-base font-semibold text-primary mb-1">🌿 Clean Shopper</p>
-          <h1 className="text-3xl font-semibold text-neutral-800 tracking-heading">
+          <h1 className="text-3xl font-semibold text-neutral-800 dark:text-neutral-100 tracking-heading">
             Create an account
           </h1>
-          <p className="text-sm text-neutral-500 mt-1">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
             Start researching safer products today.
           </p>
         </div>
 
         {/* ── Card ─────────────────────────────────────────────────────── */}
-        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8">
+        <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-700 p-8">
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
 
             {/* Form-level error */}
@@ -148,7 +148,7 @@ export default function SignUpPage({ onNavigate }) {
         </div>
 
         {/* ── Sign in link ──────────────────────────────────────────────── */}
-        <p className="text-sm text-neutral-500 text-center">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 text-center">
           Already have an account?{' '}
           <button
             onClick={() => onNavigate('signin')}

@@ -96,7 +96,6 @@ function ListIcon({ className }) {
 
 const NAV_ITEMS = [
   { route: 'browse',  label: 'Browse',   Icon: BrowseIcon  },
-  { route: 'search',  label: 'Search',   Icon: SearchIcon  },
   { route: 'library', label: 'Library',  Icon: LibraryIcon },
   { route: 'list',    label: 'My List',  Icon: ListIcon    },
 ]
@@ -109,7 +108,7 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, se
       {/* ── Desktop top bar ─────────────────────────────────────────────── */}
       <header className="
         hidden md:flex
-        w-full bg-white border-b border-neutral-200 shadow-sm
+        w-full bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-700 shadow-sm
         px-8 h-14 items-center justify-between
       ">
 
@@ -135,8 +134,8 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, se
                         focus-visible:outline-none focus-visible:ring-2
                         focus-visible:ring-primary focus-visible:ring-offset-2
                         ${isActive
-                          ? 'text-primary bg-neutral-100'
-                          : 'text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100'
+                          ? 'text-primary bg-neutral-100 dark:bg-neutral-800'
+                          : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800'
                         }
                       `}
                     >
@@ -158,7 +157,7 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, se
               title="Sign out"
               className="
                 flex items-center gap-1.5 text-sm font-medium
-                text-neutral-500 hover:text-error
+                text-neutral-500 dark:text-neutral-400 hover:text-error
                 transition-colors duration-fast ease-default
                 focus-visible:outline-none focus-visible:ring-2
                 focus-visible:ring-primary focus-visible:ring-offset-2
@@ -193,7 +192,7 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, se
         className="
           md:hidden
           fixed bottom-0 inset-x-0
-          bg-white border-t border-neutral-200 shadow-lg
+          bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-700 shadow-lg
           flex justify-around items-center h-16 px-4
         "
       >
@@ -211,7 +210,7 @@ export default function NavBar({ activeRoute, onNavigate, mode, onModeChange, se
                 focus-visible:outline-none focus-visible:ring-2
                 focus-visible:ring-primary focus-visible:ring-offset-2
                 rounded-md px-3 py-1
-                ${isActive ? 'text-primary' : 'text-neutral-400'}
+                ${isActive ? 'text-primary' : 'text-neutral-400 dark:text-neutral-500'}
               `}
             >
               <Icon className="w-5 h-5" />

@@ -36,10 +36,10 @@ function NoResults({ query }) {
         <line x1="21" y1="21" x2="16.65" y2="16.65" />
         <line x1="8" y1="11" x2="14" y2="11" />
       </svg>
-      <p className="text-base font-semibold text-neutral-700">
+      <p className="text-base font-semibold text-neutral-700 dark:text-neutral-300">
         No results for &ldquo;{query}&rdquo;
       </p>
-      <p className="text-sm text-neutral-400 leading-relaxed max-w-xs">
+      <p className="text-sm text-neutral-400 dark:text-neutral-500 leading-relaxed max-w-xs">
         Try a different keyword — a brand name, ingredient, or category
         like &ldquo;soap&rdquo;, &ldquo;Seventh Generation&rdquo;, or &ldquo;fragrance-free&rdquo;.
       </p>
@@ -66,10 +66,10 @@ function SearchPrompt() {
         <circle cx="11" cy="11" r="8" />
         <line x1="21" y1="21" x2="16.65" y2="16.65" />
       </svg>
-      <p className="text-base font-semibold text-neutral-700">
+      <p className="text-base font-semibold text-neutral-700 dark:text-neutral-300">
         Search for a product
       </p>
-      <p className="text-sm text-neutral-400 leading-relaxed max-w-xs">
+      <p className="text-sm text-neutral-400 dark:text-neutral-500 leading-relaxed max-w-xs">
         Type a product name, brand, or ingredient — like &ldquo;dish soap&rdquo;,
         &ldquo;Dr. Bronner&rdquo;, or &ldquo;castile&rdquo;.
       </p>
@@ -175,10 +175,10 @@ export default function SearchPage({ session }) {
 
       {/* ── Page header ──────────────────────────────────────────────────── */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-neutral-800 tracking-heading mb-1">
+        <h1 className="text-3xl font-semibold text-neutral-800 dark:text-neutral-100 tracking-heading mb-1">
           Search Products
         </h1>
-        <p className="text-sm text-neutral-500 leading-relaxed">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
           Find products by name, brand, or ingredient. We&rsquo;ll show you the safety rating.
         </p>
       </div>
@@ -215,7 +215,7 @@ export default function SearchPage({ session }) {
         <>
           {results.length > 0 ? (
             <>
-              <p className="text-xs text-neutral-400 font-medium mb-4">
+              <p className="text-xs text-neutral-400 dark:text-neutral-500 font-medium mb-4">
                 {results.length} {results.length === 1 ? 'result' : 'results'} for &ldquo;{query.trim()}&rdquo;
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
